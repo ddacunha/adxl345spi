@@ -39,6 +39,7 @@ void printUsage() {
             "                      (default: %i seconds) [integer]\n"
             "  -f, --freq FREQ     set the sampling rate of data stream to FREQ samples per\n"
             "                      second, 1 <= FREQ <= %i (default: %i Hz) [integer]\n"
+	    "  -c, --chan CHAN      chip select/channel (default: 0)\n"
             "\n"
             "Data is streamed in comma separated format, e. g.:\n"
             "  time,     x,     y,     z\n"
@@ -72,6 +73,7 @@ int main(int argc, char *argv[]) {
 
     int bSave = 0;
     char vSave[256] = "";
+    int vChan = 0;
     double vTime = timeDefault;
     double vFreq = freqDefault;
     for (i = 1; i < argc; i++) {  // skip argv[0] (program name)
@@ -105,12 +107,22 @@ int main(int argc, char *argv[]) {
                     printUsage();
                     return 1;
                 }
-            }
-            else {
+            } 
+	    else {
                 printUsage();
                 return 1;
             }
         }
+	else if ((strcmp(argv[i], "-c") == 0) || (strcmp(argv[i], "--chan") == 0)) {
+	    if (i + 1 <= argc - 1) {
+		  i++;
+		vChan = atoi(argv[i]);
+	    }
+	    else {
+	    	printUsage();
+    		return 1;
+	    }		
+	}
         else {
             printUsage();
             return 1;
@@ -131,7 +143,7 @@ int main(int argc, char *argv[]) {
         printf("Failed to initialize GPIO!");
         return 1;
     }
-    h = spiOpen(0, speedSPI, 3);
+    h = spiOpen( vChan, speedSPI, 3);
     data[0] = BW_RATE;
     data[1] = 0x0F;
     writeBytes(h, data, 2);
