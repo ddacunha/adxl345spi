@@ -39,7 +39,7 @@ void printUsage() {
             "                      (default: %i seconds) [integer]\n"
             "  -f, --freq FREQ     set the sampling rate of data stream to FREQ samples per\n"
             "                      second, 1 <= FREQ <= %i (default: %i Hz) [integer]\n"
-	    "  -c, --chan CHAN      chip select/channel (default: 0)\n"
+	          "  -c, --chan CHAN      chip select/channel (default: 0)\n"
             "\n"
             "Data is streamed in comma separated format, e. g.:\n"
             "  time,     x,     y,     z\n"
@@ -107,22 +107,22 @@ int main(int argc, char *argv[]) {
                     printUsage();
                     return 1;
                 }
-            } 
-	    else {
+            }
+	          else {
                 printUsage();
                 return 1;
             }
         }
-	else if ((strcmp(argv[i], "-c") == 0) || (strcmp(argv[i], "--chan") == 0)) {
-	    if (i + 1 <= argc - 1) {
-		  i++;
-		vChan = atoi(argv[i]);
-	    }
-	    else {
-	    	printUsage();
-    		return 1;
-	    }		
-	}
+    	  else if ((strcmp(argv[i], "-c") == 0) || (strcmp(argv[i], "--chan") == 0)) {
+    	      if (i + 1 <= argc - 1) {
+    		        i++;
+    		        vChan = atoi(argv[i]);
+    	      }
+    	      else {
+    	    	    printUsage();
+        		    return 1;
+    	      }
+    	  }
         else {
             printUsage();
             return 1;
